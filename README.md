@@ -1,6 +1,8 @@
 # Jetson-NX-MAVROS-Setup-Guide
 
-This guide serves as tutorial for setting up communation between companion computer (Jetson Xavier NX) using Robotics Operating System and flight controller using PX4 framework. We heavily refered [Companion Computer Setup guide for PX4](https://docs.px4.io/master/en/companion_computer/pixhawk_companion.html), please check the guide for more detailed explanation in each step.
+## Introduction
+
+This guide serves as tutorial for setting up communation between companion computer (Jetson Xavier NX) using Robotics Operating System and flight controller using PX4 framework. We heavily refered [Companion Computer Setup guide for PX4](https://docs.px4.io/master/en/companion_computer/pixhawk_companion.html), please check the guide for more detailed explanation in each step. 
 
 ## Flight Controller Setup
 
@@ -15,6 +17,15 @@ To enable flight controller to on-board computer communation, we need to setup [
 - [MAV_2_RATE](https://docs.px4.io/master/en/advanced_config/parameter_reference.html#MAV_2_RATE)= `80000` Bytes/s
 - [MAV_2_FORWARD](https://docs.px4.io/master/en/advanced_config/parameter_reference.html#MAV_2_FORWARD) = `True`
 - [SER_TEL2_BAUD](https://docs.px4.io/master/en/advanced_config/parameter_reference.html#SER_TEL2_BAUD) = `921600` baud
+
+### EKF Setup in PX4 (for VIO system)
+
+[Extended Kalman filter (**EKF**)](https://en.wikipedia.org/wiki/Extended_Kalman_filter) is a nonlinear version of  [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) which linearizes about an estimate of the current mean and [covariance](https://en.wikipedia.org/wiki/Covariance). We rely on EKF to fuse localization information such as Visual Initial Odometry system, barometer, IMU etc. to get pose estimation and publish in `/mavros/local_position/pose`.
+
+Setup in PX4:
+
+- EFK2_AID_MASK = 24
+- EFK2_HGT_MODE = VISION
 
 ### Serial Port Hardware Setup on Flight Control
 
@@ -143,8 +154,3 @@ And check state:
 ```shell
 $ rostopic echo /mavros/state
 ```
-
-
-
-
-
